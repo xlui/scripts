@@ -25,16 +25,21 @@ if [ $? -ne 0  ]; then
 	# pacman.conf
 	echo "[archlinuxcn]" >> $pacman_conf
 	echo "SigLevel = Optional TrustAll" >> $pacman_conf
-	echo 'Server = http://mirrors.ustc.edu.cn/archlinuxcn/$arch' >> $pacman_conf
+	echo 'Server = http://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch' >> $pacman_conf
 fi
 # mirrorlist
-echo 'Server = http://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch' > $pacman_mirrorlist
+echo 'Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' > $pacman_mirrorlist
 
 
 echo update source and install base system
 echo please make sure you have a good network!!!
 pacman -Syy
 pacstrap /mnt base base-devel
+
+if [ $? -ne 0  ]; then
+	echo Error occured during install base system! please run script again
+	exit 1
+fi
 
 
 echo generate fstab and chroot
