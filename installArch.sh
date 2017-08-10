@@ -50,7 +50,7 @@ wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/chroot.sh
 cp chroot.sh /mnt
 chmod +x /mnt/chroot.sh
 arch-chroot /mnt /bin/bash -c "./chroot.sh"
-
+rm chroot.sh /mnt/chroot.sh
 
 echo "Root password is: rootpasswd, please use command: passwd root  change your password immediately!!!!"
 echo "Default language is en_US, please change it from /etc/locale.conf if u want."
