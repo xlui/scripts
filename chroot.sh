@@ -9,6 +9,7 @@ Error () {
 echo Configure language
 cp /etc/locale.gen /tmp/locale.gen
 cat /tmp/locale.gen | sed '/zh_CN\ GB2312/d' | sed '/zh_CN\.GBK\ GBK/d' | sed '/zh_CN\.UTF-8\ UTF-8/d' >> /etc/locale.gen
+rm /tmp/locale.gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
@@ -48,4 +49,14 @@ grub-install --target=i386-pc --recheck /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
 systemctl enable dhcpcd
+
+# desktop
+read -p "Would you like to install desktop now(y/n)?" sure
+if [ ${sure} -eq "y" ]; then
+	wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/choose.sh
+	chmod +x choose.sh
+	./choose.sh
+	rm choose.sh
+fi
+
 exit 0
