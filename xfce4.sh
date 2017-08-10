@@ -49,5 +49,6 @@ pacman -S fcitx-sogoupinyin --noconfirm
 pacman -S gvfs gvfs-mtp ntfs-3g ttf-dejavu wqy-microhei wqy-zenhei --noconfirm
 
 echo "All things done!"
-echo "You should create a normal user for dialy use"
+echo "Note, if u run this script on vbox, you should install xf86-video-vesa instead of xf86-video-nouveau"
+echo "You should create a normal user for dialy use, use command: useradd -m USERNAME please"
 echo "Please create now"
