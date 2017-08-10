@@ -8,7 +8,7 @@ Error () {
 
 echo Configure language
 cp /etc/locale.gen /tmp/locale.gen
-cat /tmp/locale.gen | sed '/zh_CN\ GB2312/d' | sed '/zh_CN\.GBK\ GBK/d' | sed '/zh_CN\.UTF-8\ UTF-8/d' >> /etc/locale.gen
+cat /tmp/locale.gen | sed '/en_US\.UTF-8\ UTF-8/d' | sed '/zh_CN\ GB2312/d' | sed '/zh_CN\.GBK\ GBK/d' | sed '/zh_CN\.UTF-8\ UTF-8/d' > /etc/locale.gen
 rm /tmp/locale.gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
@@ -41,7 +41,7 @@ if [ $? -ne 0  ]; then
 fi
 
 echo Install base softwares and configure grub
-pacman -S vim net-tools dnsutils git grub os-prober ntfs-3g dialog wpa_supplicant openssh --noconfirm
+pacman -S vim net-tools dnsutils git grub os-prober ntfs-3g dialog wpa_supplicant openssh wget --noconfirm
 if [ $? -ne 0  ]; then
 	Error "Error during install the base softwares, please run the script again to try to solve"
 fi
@@ -52,7 +52,7 @@ systemctl enable dhcpcd
 
 # desktop
 read -p "Would you like to install desktop now(y/n)?" sure
-if [ ${sure} -eq "y" ]; then
+if [ ${sure} == "y" ]; then
 	wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/choose.sh
 	chmod +x choose.sh
 	./choose.sh
