@@ -49,11 +49,40 @@ pacman -S vim net-tools dnsutils git grub os-prober ntfs-3g dialog wpa_supplican
 if [ $? -ne 0  ]; then
 	Error "Error during install the base softwares, please chroot and run this script again to try to solve"
 fi
+
 # configure UEFI or Legacy
+grub() {
+	read -p "what's your bootload mode(uefi/legacy)?" BootMode
+	case BootMode in
+		uefi | UEFI)
+			echo "You choose UEFI mode"
+			read -p "please input the mount path you mount EFI partition(eg. if you use this command to mount: mount /dev/sda1 /boot/efi; you should input: /boot/efi):" EFI_PATH
+			grub-install --target=x86_64-efi --efi-directory=$EFI_PATH --bootloader-id=grub --recheck
+			if echo $?; then
+				return 1
+			fi
+			;;
+		legacy | LEGACY | l)
+			echo "You choose LEGACY mode"
+			grub-install --target=i386-pc --recheck /dev/sda
+			if echo $?; then
+				return 1
+			fi
+			;;
+		*)
+			echo "Unknown choosen. please choose again"
+			return 1
+			;;
+	esac
+}
 
-grub-install --target=i386-pc --recheck /dev/sda
+cat l 2>&/dev/null
+until [ $? -eq 0 ]
+do
+	grub
+done
+
 grub-mkconfig -o /boot/grub/grub.cfg
-
 systemctl enable dhcpcd
 
 # install desktop or not?
