@@ -25,3 +25,13 @@ Spend a lot of time installing system of do some other things is unworthy, so I 
 > Software Intalled: vim net-tools dnsutils git grub os-prober ntfs-3g dialog wpa_supplicant openssh wget
 > 
 > At last, this script will enable **dhcpcd** on boot.
+
+<br>
+
+#### How to use?
+After partition your disk and mount it, just download the installArch script, give the scritp run authority and run it.
+```bash
+wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/installArch.sh
+chmod +x installArch.sh
+./installArch.sh
+```
