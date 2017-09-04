@@ -44,6 +44,7 @@ Continue
 pacman -Syy
 if [ $? -ne 0 ]; then
 	Error "During update the source. This error's occure may due to your bad network! Please run this script again to try to deal with this error."
+fi
 pacstrap /mnt base base-devel
 if [ $? -ne 0  ]; then
 	Error "During install the base system, please run the script again to try to deal with this error"
