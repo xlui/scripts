@@ -1,12 +1,16 @@
 # AutoInstall
-scripts to do auto install works.
+Spend a lot of time installing system of do some other things is unworthy, so I attempt to write a series of scripts to do this thing automatically for me.  
+
 #### now includes:
 1. ArchLinux base system install
-> Please make sure you have **parted** and **mounted** before run AutoInstall scripts.  
+> Please make sure you have **parted** and **mounted** before run AutoInstall scripts. Different from others, this script will not do this for you.  
+>
+> This script privides to method to use grub: UEFI and LEGACY  
+> before running command `grub-install`, you must choose one mode. Please make choice based on your BIOS Mode.
 > 
 > Please make sure you have a **good network**.  
 > 
-> Please note, this script will add [archlinuxcn](http://mirrors.ustc.edu.cn/archlinuxcn/) to pacman.conf and will reset mirrorlist to [ustc mirror](http://mirrors.ustc.edu.cn/archlinux).  
+> Please note that, this script will add [archlinuxcn](http://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/) to pacman.conf and will reset mirrorlist to [ustc mirror](http://mirrors.tuna.tsinghua.edu.cn/archlinux).  
 > 
 > By default, your <u>language environment</u> will be set to **en_US.UTF-8**, and you can change it through file `/etc/locale.conf`  .
 > 
@@ -14,10 +18,10 @@ scripts to do auto install works.
 ` ln -sf /usr/share/zoneinfo/YOURTIMEZONE /etc/localtime`  
 ` hwclock --systohc --local`  
 >
-> By default, your <u>hostname</u> is **ArchLinux**, and you can change is through file `/etc/hostname`.
+> By default, your <u>hostname</u> will be set as **ArchLinux**, and you can change is through file `/etc/hostname`.
 > 
 > By default, <u>root's password</u> is **rootpasswd**, please change it after the scripts stop immediately! ! !
 > 
-> Software Intalled: vim net-tools dnsutils git grub os-prober ntfs-3g dialog wpa_supplicant
+> Software Intalled: vim net-tools dnsutils git grub os-prober ntfs-3g dialog wpa_supplicant openssh wget
 > 
 > At last, this script will enable **dhcpcd** on boot.
