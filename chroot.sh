@@ -76,10 +76,9 @@ grub() {
 	esac
 }
 
-cat l 2>&/dev/null
-until [ $? -eq 0 ]
+while grub 
 do
-	grub
+	echo "Install Failed. Unknown reason, try again!"
 done
 
 grub-mkconfig -o /boot/grub/grub.cfg
