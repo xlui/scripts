@@ -53,7 +53,7 @@ fi
 # configure UEFI or Legacy
 grub() {
 	read -p "what's your bootload mode(uefi/legacy)?" BootMode
-	case BootMode in
+	case $BootMode in
 		uefi | UEFI)
 			echo "You choose UEFI mode"
 			read -p "please input the mount path you mount EFI partition(eg. if you use this command to mount: mount /dev/sda1 /boot/efi; you should input: /boot/efi):" EFI_PATH
