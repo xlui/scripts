@@ -11,18 +11,21 @@ Continue ()
 Error () {
 	echo "Error occured!"
 	echo "${1}"
-	exit 1
+	exit 2
 }
 
+# make sure parted and mounter before
+echo "This script will not part or mount for you!!!"
 echo "Please make sure you have parted and mounted already!!!"
 mount | grep sda
 if [ $? -ne 0  ]; then
-	Error "Please mount before run this script"
+	Error "Please mount before run this script!"
 fi
 
+# update pacman.conf and mirrorlist
 pacman_conf="/etc/pacman.conf"
 pacman_mirrorlist="/etc/pacman.d/mirrorlist"
-echo "Add ArchLinuxcn source to pacman's conf, and change /etc/pacman.d/mirrorlist"
+echo "Add ArchLinuxcn source to pacman's conf, and change /etc/pacman.d/mirrorlist to the tsinghua"
 # pacman.conf
 cat /etc/pacman.conf | grep archlinuxcn
 if [ $? -ne 0  ]; then
@@ -34,22 +37,27 @@ fi
 echo 'Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' > $pacman_mirrorlist
 
 
-echo Update source and install base system
-echo Please make sure you have a good network!!!
+# update database and install base system
+echo "Update source and install base system"
+echo "Please make sure you have a good network!!!"
 Continue 
 pacman -Syy
+if [ $? -ne 0 ]; then
+	Error "During update the source. This error's occure may due to your bad network! Please run this script again to try to deal with this error."
 pacstrap /mnt base base-devel
 if [ $? -ne 0  ]; then
-	Error "Error occured during install the base system, please run the script again to try to deal with this error"
+	Error "During install the base system, please run the script again to try to deal with this error"
 fi
 
 
-echo Generate fstab and chroot
+# generate fstab and get chroot script to run
+echo "Generate fstab and chroot"
 genfstab -U -p /mnt >> /mnt/etc/fstab
 wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/chroot.sh
 cp chroot.sh /mnt
 chmod +x /mnt/chroot.sh
 arch-chroot /mnt /bin/bash -c "./chroot.sh"
+# arch-chroot: -c option enable you run script after chroot
 rm chroot.sh /mnt/chroot.sh
 
 echo "Root password is: rootpasswd, please use command: passwd root  change your password immediately!!!!"
