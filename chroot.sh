@@ -6,7 +6,8 @@ Error () {
 	exit 1
 }
 
-echo Configure language
+# configure language settings
+echo "Configure language"
 cp /etc/locale.gen /tmp/locale.gen
 cat /tmp/locale.gen | sed '/en_US\.UTF-8\ UTF-8/d' | sed '/zh_CN\ GB2312/d' | sed '/zh_CN\.GBK\ GBK/d' | sed '/zh_CN\.UTF-8\ UTF-8/d' > /etc/locale.gen
 rm /tmp/locale.gen
@@ -17,14 +18,17 @@ echo "zh_CN.GBK GBK" >> /etc/locale.gen
 echo "zh_CN GB2312" >> /etc/locale.gen
 locale-gen
 
-echo Set time zone info
+# set timezone info
+echo "Set time zone info"
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 hwclock --systohc --local
 
-echo Change hostname and root password
+# hostname and password
+echo "Change hostname and root password"
 echo "ArchLinux" > /etc/hostname
 echo root:rootpasswd | chpasswd
 
+# archlinuxcn repository
 echo Add archlinuxcn repositories
 pacman_conf="/etc/pacman.conf"
 cat /etc/pacman.conf | grep archlinuxcn
@@ -34,24 +38,26 @@ if [ $? -ne 0  ]; then
 	echo 'Server = http://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch' >> $pacman_conf
 fi
 
-# sync repositories
+# sync databases
 pacman -Syy
 if [ $? -ne 0  ]; then
-	Error "Error during sync the repositories, please run this script again to try to solve this error"
+	Error "Error during sync the repositories, this error occurs may because your network. Please chroot and run this script again to try to solve this error"
 fi
 
-echo Install base softwares and configure grub
+echo "Install base softwares and configure grub"
 pacman -S vim net-tools dnsutils git grub os-prober ntfs-3g dialog wpa_supplicant openssh wget --noconfirm
 if [ $? -ne 0  ]; then
-	Error "Error during install the base softwares, please run the script again to try to solve"
+	Error "Error during install the base softwares, please chroot and run this script again to try to solve"
 fi
+# configure UEFI or Legacy
+
 grub-install --target=i386-pc --recheck /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
 systemctl enable dhcpcd
 
-# desktop
-read -p "Would you like to install desktop now(y/n)?" sure
+# install desktop or not?
+read -p "Would you like to install a desktop environment now(y/n)?" sure
 if [ ${sure} == "y" ]; then
 	wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/choose.sh
 	chmod +x choose.sh
