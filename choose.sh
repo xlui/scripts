@@ -5,7 +5,11 @@ read -p "Please choose a desktop to install(gnome, xfce): " choosen
 
 case $choosen in
 	gnome)
-		echo "Script for install gnome desktop isnot ok now"
+		echo "You choose to install gnome!"
+		wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/gnome.sh
+		chmod +x gnome.sh
+		./gnome.sh
+		rm gnome.sh
 		;;
 	xfce)
 		echo "You choose to install xfce!"
