@@ -56,6 +56,8 @@ grub() {
 	case $BootMode in
 		uefi | UEFI)
 			echo "You choose UEFI mode"
+			echo "Installing efibootmgr"
+			pacman -S efibootmgr --noconfirm
 			read -p "please input the mount path you mount EFI partition(eg. if you use this command to mount: mount /dev/sda1 /boot/efi; you should input: /boot/efi):" EFI_PATH
 			grub-install --target=x86_64-efi --efi-directory=$EFI_PATH --bootloader-id=grub --recheck
 			if echo $?; then
