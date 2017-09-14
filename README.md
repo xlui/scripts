@@ -43,7 +43,7 @@ chmod +x installArch.sh
 
 2. BBR acceleration auto-set scripts
 
-Just download the bbs.sh and run.
+Just download the bbr.sh and run.
 ```bash
 wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/BBR/bbr.sh
 chmod +x bbr.sh
