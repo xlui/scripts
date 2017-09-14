@@ -28,6 +28,7 @@ echo "regenerate grub config file"
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
 echo "downloading after_reboot.sh"
+rm after_reboot.sh
 wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/BBR/after_reboot.sh
 echo "Please reboot to bring the latest kernel into effect"
 echo "And after you reboot, please run the after_reboot.sh"
