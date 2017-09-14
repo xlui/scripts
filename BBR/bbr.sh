@@ -14,7 +14,7 @@ echo "update grub"
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
 echo "get the latest kernel's information"
-lastest=`cat /boot/grub2/grub.cfg | grep CentOS | head -1 | awk -F\' '{print $2}'`
+latest=`cat /boot/grub2/grub.cfg | grep CentOS | head -1 | awk -F\' '{print $2}'`
 
 echo "set the latest kernel to be default boot option"
 grub2-set-default "$latest"
