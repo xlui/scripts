@@ -46,17 +46,13 @@ Spend a lot of time installing system of do some other things is unworthy, so I 
 After partition your disk and mount it properly, just download the installArch script, give the scritp run authority and run it.
 
 ```bash
-wget https://raw.githubusercontent.com/xlui/AutoInstall/master/ArchLinux/installArch.sh
-chmod +x installArch.sh
-./installArch.sh
+curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/ArchLinux/installArch.sh | sh
 ```
 
 2. BBR acceleration auto-set scripts
 
 ```bash
-wget https://raw.githubusercontent.com/xlui/AutoInstall/master/BBR/bbr.sh
-chmod +x bbr.sh
-./bbr.sh
+curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/BBR/bbr.sh | sh
 ```
 
 ## Any question

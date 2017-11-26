@@ -1,4 +1,4 @@
-### Set BBR on server Automatically
+# Set BBR on server Automatically
 
 Open bbr acceleration can help shadowsocks to be speeding up. But do this thing manually is boring, and time-consuming.  
 
@@ -7,3 +7,9 @@ Especially on a new cloud server. You may reinstall or change to another service
 Now I write a simple script to do this thing for you, all the command inside is lucid.  
 It is actually combining those command, and **no error detect module** inside.  
 Once error occurs, you can simply rerun the script.  
+
+## Usage
+
+```bash
+curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/BBR/bbr.sh | sh
+```
