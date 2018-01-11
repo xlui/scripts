@@ -3,11 +3,11 @@ Spend a lot of time installing system of do some other things is unworthy, so I 
 
 ## Now Includes:
 
-- [Install ArchLinux](#ArchLinux)
-- [Open BBR automatically](#BBR)
-- [Vimrc](#Vimrc)
-- [Usage](#Usage)
-- [LICENSE](#LICENSE)
+- [Install ArchLinux](#archLinux)
+- [Open BBR automatically](#bbr)
+- [Vimrc](#vimrc)
+- [Usage](#usage)
+- [LICENSE](#license)
 
 
 ## ArchLinux
@@ -52,19 +52,19 @@ This script will set some common options in vim, in order to create a good exper
 Make sure you have parted and mounted you disk properly!
 
 ```bash
-curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/ArchLinux/installArch.sh | sh
+curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/ArchLinux/installArch.sh | bash
 ```
 
 2. BBR acceleration auto-set script
 
 ```bash
-curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/BBR/bbr.sh | sh
+curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/BBR/bbr.sh | bash
 ```
 
 3. vimrc
 
 ```bash
-curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/VIM/vim.sh | sh
+curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/VIM/vim.sh | bash
 ```
 
 ## LICENSE

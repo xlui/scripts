@@ -1,6 +1,6 @@
 #!/bin/bash
 default_dir="/etc/"
-URL="https://raw.githubusercontent.com/xlui/Configs/master/vimrc"
+URL="https://raw.githubusercontent.com/xlui/AutoInstall/master/VIM/vimrc"
 
 
 # detect permission
