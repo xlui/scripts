@@ -54,10 +54,10 @@ fi
 # generate fstab and get chroot script to run
 echo "Generate fstab and chroot"
 genfstab -U -p /mnt >> /mnt/etc/fstab
-wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/chroot.sh
+wget https://raw.githubusercontent.com/xlui/AutoInstall/master/ArchLinux/chroot.sh
 cp chroot.sh /mnt
 chmod +x /mnt/chroot.sh
-arch-chroot /mnt /bin/bash -c "./chroot.sh"
+arch-chroot /mnt /bin/bash -c "bash chroot.sh"
 # arch-chroot: -c option enable you run script after chroot
 rm chroot.sh /mnt/chroot.sh
 
