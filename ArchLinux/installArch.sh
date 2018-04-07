@@ -65,4 +65,4 @@ mv chroot.sh /mnt
 chmod +x /mnt/chroot.sh
 arch-chroot /mnt /bin/bash -c "bash chroot.sh"
 
-echo "Root password is: rootpasswd, please use command: `passwd root` to change your password immediately!!!!"
+echo "Root password is: rootpasswd, please use command: passwd root to change your password immediately!!!!"
