@@ -7,8 +7,6 @@ Error() {
 	exit 2
 }
 
-echo
-echo
 echo 'Checking mounted /dev/sda or not....'
 echo "This script will not part or mount for you!!!"
 echo "Please make sure you have parted and mounted already!!!"
@@ -19,12 +17,13 @@ fi
 
 echo
 echo
-echo 'Update pacman.conf and mirrorlist....'
-echo "Add ArchLinuxcn source to pacman's conf, and change /etc/pacman.d/mirrorlist to mirrors.tuna.tsinghua.edu.cn"
+echo 'Updating pacman.conf and mirrorlist....'
+echo "This script will add ArchLinuxcn source to pacman's conf"
+echo "and change the content of /etc/pacman.d/mirrorlist to mirrors.tuna.tsinghua.edu.cn"
 # pacman.conf
 pacman_conf="/etc/pacman.conf"
 pacman_mirrorlist="/etc/pacman.d/mirrorlist"
-cat /etc/pacman.conf | grep archlinuxcn
+cat /etc/pacman.conf | grep archlinuxcn > /dev/null
 if [ $? -ne 0  ]; then
 	echo "[archlinuxcn]" >> $pacman_conf
 	echo "SigLevel = Optional TrustAll" >> $pacman_conf
@@ -37,11 +36,11 @@ echo 'Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' > 
 # update database and install base system
 echo
 echo
-echo "Update source and install base system...."
+echo "Updating source and install base system...."
 echo "Please make sure you have a good network!!!"
 
 read -p "continue(y/n) ?" queren
-if [ "${queren}" -ne "y"  ]; then
+if [ "${queren}" != "y"  ]; then
 	exit 1
 fi
 
@@ -59,7 +58,7 @@ fi
 # generate fstab and get chroot script to run
 echo
 echo
-echo "Generating fstab and chroot...."
+echo "Generating fstab and prepare to chroot...."
 genfstab -U -p /mnt >> /mnt/etc/fstab
 wget $git_repo"chroot.sh"
 mv chroot.sh /mnt

@@ -9,8 +9,6 @@ Error()
 
 Configure_Language()
 {
-	echo
-	echo
 	echo "Configuring language...."
 	cp /etc/locale.gen /tmp/locale.gen
 	cat /tmp/locale.gen | sed '/en_US\.UTF-8\ UTF-8/d' | sed '/zh_CN\ GB2312/d' | sed '/zh_CN\.GBK\ GBK/d' | sed '/zh_CN\.UTF-8\ UTF-8/d' > /etc/locale.gen
@@ -29,7 +27,6 @@ Configure_Time()
 	echo
 	echo "Setting time zone...."
 	ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-	timedatectl set-ntp true
 }
 
 Configure_HostnameRootPassword()
@@ -47,7 +44,7 @@ Configure_ArchLinuxCN()
 	echo
 	echo 'Adding archlinuxcn repositories'
 	pacman_conf="/etc/pacman.conf"
-	cat /etc/pacman.conf | grep archlinuxcn
+	cat /etc/pacman.conf | grep archlinuxcn > /dev/null
 	if [ $? -ne 0  ]; then
 		echo "[archlinuxcn]" >> $pacman_conf
 		echo "SigLevel = Optional TrustAll" >> $pacman_conf
@@ -84,10 +81,16 @@ Grub()
 				echo "Please input the mount path you mount EFI partition(eg. if you use this command to mount: mount /dev/sda1 /boot/efi; you should input: /boot/efi)"
 				read EFIpath
 				grub-install --target=x86_64-efi --efi-directory=$EFIpath --bootloader-id=grub --recheck
+				if [ $? -eq 0  ]; then
+					break
+				fi
 				;;
 			legacy | LEGACY | l)
 				echo "You choose LEGACY mode"
 				grub-install --target=i386-pc --recheck /dev/sda
+				if [ $? -eq 0  ]; then
+					break
+				fi
 				;;
 			*)
 				echo "Unknown choosen. please choose again"
@@ -107,9 +110,9 @@ Choose()
 	if [ "${choose}" == "y" ]; then
 		echo "Please choose a desktop environment to install(gnome, xfce):"
 		read choosen
-		if [ "${choosen}" -eq "gnome"  ]; then
+		if [ "${choosen}" != "gnome"  ]; then
 			Gnome
-		else if [ "${choosen}" -eq "xfce"  ]; then
+		else if [ "${choosen}" != "xfce"  ]; then
 			Xfce
 		fi
 		fi
@@ -215,3 +218,4 @@ Configure_ArchLinuxCN
 Install_Base_Software
 Grub
 Choose
+
