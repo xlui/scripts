@@ -1,98 +1,217 @@
 #!/bin/bash
 
-Error () {
+Error() 
+{
 	echo "Error occured!"
 	echo "${1}"
 	exit 1
 }
 
-# configure language settings
-echo "Configure language"
-cp /etc/locale.gen /tmp/locale.gen
-cat /tmp/locale.gen | sed '/en_US\.UTF-8\ UTF-8/d' | sed '/zh_CN\ GB2312/d' | sed '/zh_CN\.GBK\ GBK/d' | sed '/zh_CN\.UTF-8\ UTF-8/d' > /etc/locale.gen
-rm /tmp/locale.gen
-echo "LANG=en_US.UTF-8" > /etc/locale.conf
-echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
-echo "zh_CN.GBK GBK" >> /etc/locale.gen
-echo "zh_CN GB2312" >> /etc/locale.gen
-locale-gen
-
-# set timezone info
-echo "Set time zone info"
-ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-hwclock --systohc --local
-
-# hostname and password
-echo "Change hostname and root password"
-echo "ArchLinux" > /etc/hostname
-echo root:rootpasswd | chpasswd
-
-# archlinuxcn repository
-echo Add archlinuxcn repositories
-pacman_conf="/etc/pacman.conf"
-cat /etc/pacman.conf | grep archlinuxcn
-if [ $? -ne 0  ]; then
-	echo "[archlinuxcn]" >> $pacman_conf
-	echo "SigLevel = Optional TrustAll" >> $pacman_conf
-	echo 'Server = http://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch' >> $pacman_conf
-fi
-
-# sync databases
-pacman -Syy
-if [ $? -ne 0  ]; then
-	Error "Error during sync the repositories, this error occurs may because your network. Please chroot and run this script again to try to solve this error"
-fi
-
-echo "Install base softwares and configure grub"
-pacman -S vim net-tools dnsutils git grub os-prober ntfs-3g dialog wpa_supplicant openssh wget --noconfirm
-if [ $? -ne 0  ]; then
-	Error "Error during install the base softwares, please chroot and run this script again to try to solve"
-fi
-
-# configure UEFI or Legacy
-grub() {
-	read -p "what's your bootload mode(uefi/legacy)?" BootMode
-	case $BootMode in
-		uefi | UEFI)
-			echo "You choose UEFI mode"
-			echo "Installing efibootmgr"
-			pacman -S efibootmgr --noconfirm
-			read -p "please input the mount path you mount EFI partition(eg. if you use this command to mount: mount /dev/sda1 /boot/efi; you should input: /boot/efi):" EFI_PATH
-			grub-install --target=x86_64-efi --efi-directory=$EFI_PATH --bootloader-id=grub --recheck
-			if echo $?; then
-				return 1
-			fi
-			;;
-		legacy | LEGACY | l)
-			echo "You choose LEGACY mode"
-			grub-install --target=i386-pc --recheck /dev/sda
-			if echo $?; then
-				return 1
-			fi
-			;;
-		*)
-			echo "Unknown choosen. please choose again"
-			return 1
-			;;
-	esac
+Configure_Language()
+{
+	echo
+	echo
+	echo "Configuring language...."
+	cp /etc/locale.gen /tmp/locale.gen
+	cat /tmp/locale.gen | sed '/en_US\.UTF-8\ UTF-8/d' | sed '/zh_CN\ GB2312/d' | sed '/zh_CN\.GBK\ GBK/d' | sed '/zh_CN\.UTF-8\ UTF-8/d' > /etc/locale.gen
+	rm /tmp/locale.gen
+	echo "LANG=en_US.UTF-8" > /etc/locale.conf
+	echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+	echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen
+	echo "zh_CN.GBK GBK" >> /etc/locale.gen
+	echo "zh_CN GB2312" >> /etc/locale.gen
+	locale-gen
 }
 
-while grub 
-do
-	echo "Install Failed. Unknown reason, try again!"
-done
+Configure_Time()
+{
+	echo
+	echo
+	echo "Setting time zone...."
+	ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+	timedatectl set-ntp true
+}
 
-grub-mkconfig -o /boot/grub/grub.cfg
-systemctl enable dhcpcd
+Configure_HostnameRootPassword()
+{
+	echo
+	echo
+	echo "Changing hostname and root password...."
+	echo "ArchLinux" > /etc/hostname
+	echo root:rootpasswd | chpasswd
+}
 
-# install desktop or not?
-read -p "Would you like to install a desktop environment now(y/n)?" sure
-if [ ${sure} == "y" ]; then
-	wget https://raw.githubusercontent.com/nxmup/AutoInstall/master/choose.sh
-	chmod +x choose.sh
-	./choose.sh
-	rm choose.sh
-fi
+Configure_ArchLinuxCN()
+{
+	echo
+	echo
+	echo 'Adding archlinuxcn repositories'
+	pacman_conf="/etc/pacman.conf"
+	cat /etc/pacman.conf | grep archlinuxcn
+	if [ $? -ne 0  ]; then
+		echo "[archlinuxcn]" >> $pacman_conf
+		echo "SigLevel = Optional TrustAll" >> $pacman_conf
+		echo 'Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch' >> $pacman_conf
+	fi
+}
 
-exit 0
+Install_Base_Software()
+{
+	pacman -Syy
+	if [ $? -ne 0  ]; then
+		Error "Bad Network!!! Please run this script again!"
+	fi
+
+	echo
+	echo
+	echo "Installing base softwares and configure grub...."
+	pacman -S vim net-tools dnsutils git grub os-prober ntfs-3g dialog wpa_supplicant openssh wget --noconfirm
+	if [ $? -ne 0  ]; then
+		Error "Bad network, chroot and try again!!!"
+	fi
+}
+
+Grub()
+{
+	while :;do
+		echo "what's your boot mode(uefi/legacy)?"
+		read bootmode
+		case $bootmode in
+			uefi | UEFI | u)
+				echo "You choose UEFI mode!"
+				echo "Installing efibootmgr...."
+				pacman -S efibootmgr --noconfirm
+				echo "Please input the mount path you mount EFI partition(eg. if you use this command to mount: mount /dev/sda1 /boot/efi; you should input: /boot/efi)"
+				read EFIpath
+				grub-install --target=x86_64-efi --efi-directory=$EFIpath --bootloader-id=grub --recheck
+				;;
+			legacy | LEGACY | l)
+				echo "You choose LEGACY mode"
+				grub-install --target=i386-pc --recheck /dev/sda
+				;;
+			*)
+				echo "Unknown choosen. please choose again"
+				continue
+				;;
+		esac
+	done
+	
+	grub-mkconfig -o /boot/grub/grub.cfg
+	systemctl enable dhcpcd
+}
+
+Choose()
+{
+	echo "Would you like to install a desktop environment now(y/n)?"
+	read choose
+	if [ "${choose}" == "y" ]; then
+		echo "Please choose a desktop environment to install(gnome, xfce):"
+		read choosen
+		if [ "${choosen}" -eq "gnome"  ]; then
+			Gnome
+		else if [ "${choosen}" -eq "xfce"  ]; then
+			Xfce
+		fi
+		fi
+	else
+		echo
+		echo "All things done."
+		exit 0
+	fi
+}
+
+Gnome()
+{
+	echo
+	echo
+	echo "Installing xorg and video driver and synaptics board driver...."
+	Configure_ArchLinuxCN
+	pacman -S xorg-server xorg-xinit xf86-video-nouveau xf86-video-vesa xf86-input-synaptics --noconfirm
+	if [ $? -ne 0  ]; then
+		Error "Bad network, try again!!!"
+	fi
+
+	echo
+	echo
+	echo "Installing gnome...."
+	pacman -S gnome gnome-extra gdm --noconfirm
+	if [ $? -ne 0  ]; then
+		Error "Bad network, try again!!!"
+	fi
+	systemctl enable gdm
+	systemctl enable NetworkManager
+
+	Create_User
+
+	echo
+	echo "All things done."
+}
+
+Xfce()
+{
+	echo
+	echo
+	echo "Installing x-server...."
+	pacman -S xorg-server xorg-xinit --noconfirm
+	if [ $? -ne 0  ]; then
+		Error "Bad network, try again!!!"
+	fi
+	
+	echo "Installing xfce4...."
+	pacman -S xfce4 xfce4-goodies lxdm networkmanager network-manager-applet --noconfirm
+	if [ $? -ne 0  ]; then
+		Error "Bad network, try again!!!"
+	fi
+	systemctl enable NetworkManager
+	cp /etc/lxdm/lxdm.conf /tmp/lxdm.conf
+	sed '/session=/d' /tmp/lxdm.conf | sed '/session/a\session=\/usr\/bin\/startxfce4' > /etc/lxdm/lxdm.conf
+	rm /tmp/lxdm.conf
+	systemctl enable lxdm
+	
+	echo "Installing drivers and fcitx...."
+	pacman -S xf86-video-nouveau xf86-video-vesa xf86-input-synaptics alsa-utils fcitx-im fcitx-configtool --noconfirm
+	if [ $? -ne 0  ]; then
+		Error "Bad network, try again!!!"
+	fi
+	echo 'export GTK_IM_MODULE=fcitx' >> /etc/profile
+	echo 'export QT_IM_MODULE=fcitx' >> /etc/profile
+	echo 'export XMODIFIERS="@im=fcitx"' >> /etc/profile
+	pacman -S fcitx-sogoupinyin --noconfirm
+
+	echo "Installing base software...."
+	pacman -S gvfs gvfs-mtp ntfs-3g ttf-dejavu wqy-microhei wqy-zenhei --noconfirm
+	if [ $? -ne 0  ]; then
+		Error "Bad network, try again!!!"
+	fi
+
+	Create_User
+
+	echo
+	echo "All things done."
+}
+
+Create_User()
+{
+	echo
+	echo
+	echo "Creating a normal user...."
+	echo "Please input the new user's username:"
+	read username
+	echo "Please input the new user's password:"
+	read password
+	useradd -m "${username}"
+	echo "${username}":"${password}" | chpasswd
+}
+
+
+############
+#   start
+############
+
+Configure_Language
+Configure_Time
+Configure_HostnameRootPassword
+Configure_ArchLinuxCN
+Install_Base_Software
+Grub
+Choose
