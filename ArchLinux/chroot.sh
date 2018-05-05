@@ -163,7 +163,7 @@ Xfce()
 	fi
 	
 	echo "Installing xfce4...."
-	pacman -S xfce4 xfce4-goodies lxdm networkmanager network-manager-applet --noconfirm
+	pacman -S xfce4 xfce4-goodies lxdm networkmanager network-manager-applet
 	if [ $? -ne 0  ]; then
 		Error "Bad network, try again!!!"
 	fi
