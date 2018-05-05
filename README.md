@@ -63,7 +63,7 @@ Script to change git config can be destructive, so I just post my git config her
 Make sure you have parted and mounted you disk properly!
 
 ```bash
-curl -SL https://raw.githubusercontent.com/xlui/AutoInstall/master/ArchLinux/installArch.sh | bash
+wget https://raw.githubusercontent.com/xlui/AutoInstall/master/ArchLinux/installArch.sh && chmod +x installArch.sh && bash installArch.sh
 ```
 
 2. BBR acceleration auto-set script

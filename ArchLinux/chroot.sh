@@ -2,6 +2,8 @@
 
 Error() 
 {
+	echo
+	echo
 	echo "Error occured!"
 	echo "${1}"
 	exit 1
@@ -110,9 +112,9 @@ Choose()
 	if [ "${choose}" == "y" ]; then
 		echo "Please choose a desktop environment to install(gnome, xfce):"
 		read choosen
-		if [ "${choosen}" != "gnome"  ]; then
+		if [ "${choosen}" == "gnome"  ]; then
 			Gnome
-		else if [ "${choosen}" != "xfce"  ]; then
+		else if [ "${choosen}" == "xfce"  ]; then
 			Xfce
 		fi
 		fi

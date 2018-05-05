@@ -2,12 +2,15 @@
 git_repo="https://raw.githubusercontent.com/xlui/AutoInstall/master/ArchLinux/"
 
 Error() {
+	echo
+	echo
 	echo "Error occured!"
 	echo "${1}"
 	exit 2
 }
 
 echo 'Checking mounted /dev/sda or not....'
+sleep 2
 echo "This script will not part or mount for you!!!"
 echo "Please make sure you have parted and mounted already!!!"
 mount | grep sda
