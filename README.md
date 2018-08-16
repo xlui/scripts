@@ -66,17 +66,17 @@ have a good experience with git :smirk:
 Make sure you have parted and mounted your disk properly!
 
 ```bash
-wget https://raw.githubusercontent.com/xlui/AutoInstall/master/ArchLinux/installArch.sh && chmod +x installArch.sh && bash installArch.sh
+wget https://sh.xlui.app/arch && chmod +x arch && bash arch
 ```
 
 2. BBR acceleration auto-set script
 
 ```bash
-wget https://raw.githubusercontent.com/xlui/AutoInstall/master/BBR/bbr.sh && chmod +x bbr.sh && bash bbr.sh
+wget https://sh.xlui.app/bbr && chmod +x bbr && bash bbr
 ```
 
 3. vimrc
 
 ```bash
-wget https://raw.githubusercontent.com/xlui/AutoInstall/master/VIM/vim.sh && chmod +x vim.sh && bash vim.sh
+wget https://sh.xlui.app/vim && chmod +x vim && bash vim
 ```
