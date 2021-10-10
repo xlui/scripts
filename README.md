@@ -1,16 +1,15 @@
-# AutoInstall
+# scripts
 
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/xlui/AutoInstall)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/xlui/scripts)
 
-Spend a lot of time installing a linux system(like archlinux which you should do it yourself) or doing some other bored things is unworthy, so I have wrote some scripts to do this thing automatically. What you should do is to download the script and run it and wait!
+Some useful scripts.
 
 ## Now Includes
 
 - [Install ArchLinux](#archlinux)
-- [Open BBR automatically](#bbr)
+- [Configure BBR](#bbr)
 - [Vimrc](#vimrc)
-- [Git Config](#git-config)
-- [Usage](#usage)
+- [Useful Git Config](#git-config)
 
 ## ArchLinux
 
@@ -38,7 +37,13 @@ The script will do all installation things without `partition`, so **please make
 
 ## BBR
 
-Automatical enable bbr acceleration script in **CentOS**, just download the `bbr.sh` script and run. This script will download the latest kernel and set it to the default booting kernel, so if you don't want to use the latest you may download it yourself and treat the script as a reference :).
+Configure BBR:
+
+```bash
+wget https://raw.githubusercontent.com/xlui/scripts/master/BBR/bbr.sh | bash
+# or the shorten link:
+wget https://s.akise.app/bbr | bash
+```
 
 ## Vimrc
 
@@ -59,24 +64,16 @@ Script to change git config can be destructive, so I just post my git config her
 
 have a good experience with git :smirk:
 
-## Usage
+## iptables
 
-1. Arch auto-install script
-
-Make sure you have parted and mounted your disk properly!
+Clear iptables with script:
 
 ```bash
-wget https://sh.xlui.app/arch && chmod +x arch && bash arch
+wget https://raw.githubusercontent.com/xlui/scripts/master/iptables/clear.sh | bash
+# or the shorten link:
+wget https://s.akise.app/iptables | bash
 ```
 
-2. BBR acceleration auto-set script
+# LICENSE
 
-```bash
-wget https://sh.xlui.app/bbr && chmod +x bbr && bash bbr
-```
-
-3. vimrc
-
-```bash
-wget https://sh.xlui.app/vim && chmod +x vim && bash vim
-```
+[MIT](LICENSE)
