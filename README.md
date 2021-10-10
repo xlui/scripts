@@ -40,14 +40,15 @@ The script will do all installation things without `partition`, so **please make
 Configure BBR:
 
 ```bash
-wget https://raw.githubusercontent.com/xlui/scripts/master/BBR/bbr.sh | bash
-# or the shorten link:
 wget https://s.akise.app/bbr | bash
 ```
 
 ## Vimrc
 
-This script will set some common options in vim, in order to create a good experience in remote server(the environment is always command line only). See details about the config: [vimrc](VIM/vimrc)
+```bash
+wget https://s.akise.app/vim
+cat vim > ~/.vimrc
+```
 
 ## Git Config
 
@@ -69,8 +70,6 @@ have a good experience with git :smirk:
 Clear iptables with script:
 
 ```bash
-wget https://raw.githubusercontent.com/xlui/scripts/master/iptables/clear.sh | bash
-# or the shorten link:
 wget https://s.akise.app/iptables | bash
 ```
 
